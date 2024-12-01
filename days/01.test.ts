@@ -10,6 +10,6 @@ Deno.test('it should run the first part of day 01 correctly', () => {
 });
 
 Deno.test('it should run the second part of day 01 correctly', () => {
-  const expected = 31;
-  p2(input).subscribe((result) => assertEquals(result, expected));
+	const expected = 31;
+	p2(input).subscribe((result) => assertEquals(result, expected));
 });
