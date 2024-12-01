@@ -1,4 +1,4 @@
-import { groupBy, mergeMap, tap, map, type Observable as $, reduce, of } from 'rxjs';
+import { groupBy, map, mergeMap, type Observable as $, of, reduce, tap } from 'rxjs';
 
 /**
  * Splits a string into an array of strings based on a separator.
@@ -41,3 +41,17 @@ export const matchMap = <T = string>(regex: RegExp, mapFn: (match: RegExpExecArr
 			)
 		),
 	);
+
+/**
+ * Matches a string based on a regex and reduces the results to a single value.
+ * @param regex The regex to match the string by.
+ * @param reduceFn The function to reduce the results by.
+ * @param initialValue The initial value to reduce the results by.
+ */
+export const matchReduce =
+	<T = string>(regex: RegExp, reduceFn: (acc: T, curr: RegExpExecArray) => T, initialValue: T) => (source: $<string>) =>
+		source.pipe(
+			match(regex),
+			mergeMap((matches) => matches),
+			reduce(reduceFn, initialValue),
+		);
