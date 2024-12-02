@@ -1,5 +1,5 @@
 import { Solution } from '@types';
-import { count, each, some, splitRows } from '@operators';
+import { count, enumerate, some, splitRows } from '@operators';
 import { every, filter, map, Observable as $, pairwise } from 'rxjs';
 
 const validateReport = () => (source: $<number[]>) =>
@@ -8,7 +8,7 @@ const validateReport = () => (source: $<number[]>) =>
 			numbers.every((n, i) => i === 0 || n >= numbers[i - 1]) ||
 			numbers.every((n, i) => i === 0 || n <= numbers[i - 1])
 		),
-		each((number) =>
+		enumerate((number) =>
 			number.pipe(
 				pairwise(),
 				map(([prev, curr]) => Math.abs(curr - prev)),

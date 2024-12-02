@@ -63,7 +63,7 @@ export const count = <T>(predicate?: (item: T) => boolean) => (source: $<T>) =>
  * Loop over each element in the array and apply the pipe modifier
  * @param pipe The pipe modifier to apply to each element
  */
-export const each = <TIn, TOut>(pipe: (x: $<TIn>) => $<TOut>) => (source: $<Array<TIn>>) =>
+export const enumerate = <TIn, TOut>(pipe: (x: $<TIn>) => $<TOut>) => (source: $<Array<TIn>>) =>
 	source.pipe(
 		map((input) => of(...input).pipe(pipe)),
 		mergeAll(),
