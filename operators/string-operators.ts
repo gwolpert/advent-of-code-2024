@@ -1,4 +1,4 @@
-import { groupBy, map, mergeMap, type Observable as $, of, reduce, tap } from 'rxjs';
+import { map, mergeMap, type Observable as $, of, reduce } from 'rxjs';
 
 /**
  * Splits a string into an array of strings based on a separator.
@@ -55,3 +55,4 @@ export const matchReduce =
 			mergeMap((matches) => matches),
 			reduce(reduceFn, initialValue),
 		);
+

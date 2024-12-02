@@ -1,6 +1,6 @@
 import { Solution } from '@types';
 import { matchReduce, sum } from '@operators';
-import { map, mergeMap, Observable as $ } from 'npm:rxjs@7.8.1';
+import { map, mergeMap, Observable as $ } from 'rxjs';
 
 const processInput = () => (source: $<string>) =>
 	source.pipe(

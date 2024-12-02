@@ -1,5 +1,5 @@
 import {of} from 'rxjs';
-import {p1, p2} from './01.ts';
+import {p1, p2} from './{DAY-NUMBER}.ts';
 import {assertEquals} from 'assert';
 
 const input = of('');
