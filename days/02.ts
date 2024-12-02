@@ -30,10 +30,6 @@ export const p2: Solution = (source) =>
 		splitRows(),
 		map((row) => row.split(/\s+/).map(Number)),
 		map((numbers) => [numbers, ...numbers.map((_, i) => numbers.filter((_, j) => i !== j))]),
-		some((report) =>
-			report.pipe(
-				validateReport(),
-			)
-		),
+		some((report) => report.pipe(validateReport())),
 		count(),
 	);
