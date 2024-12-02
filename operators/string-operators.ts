@@ -55,4 +55,3 @@ export const matchReduce =
 			mergeMap((matches) => matches),
 			reduce(reduceFn, initialValue),
 		);
-

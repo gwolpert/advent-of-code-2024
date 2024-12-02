@@ -1,6 +1,6 @@
 import { map, type Observable as $, reduce } from 'rxjs';
-import {mergeMap} from "npm:rxjs@7.8.1";
-import {filter, of} from "npm:rxjs";
+import { mergeMap } from 'npm:rxjs@7.8.1';
+import { filter, of } from 'npm:rxjs';
 
 /**
  * Sums all the numbers in the array
@@ -75,7 +75,8 @@ export const some = <T>(predicate?: (item: T) => boolean) => (source: $<T>) =>
  * Loop over each element in the array and apply the pipe modifier
  * @param pipe The pipe modifier to apply to each element
  */
-export const each = <TIn, TOut>(pipe: (x: $<TIn>) => $<TOut>) => (source: $<Array<TIn>>) => source.pipe(
-	map((input) => of(...input).pipe(pipe)),
-	mergeMap((row) => row),
-);
+export const each = <TIn, TOut>(pipe: (x: $<TIn>) => $<TOut>) => (source: $<Array<TIn>>) =>
+	source.pipe(
+		map((input) => of(...input).pipe(pipe)),
+		mergeMap((row) => row),
+	);
