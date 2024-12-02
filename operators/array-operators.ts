@@ -1,4 +1,4 @@
-import { defaultIfEmpty, filter, map, mergeAll, type Observable as $, of, reduce, take } from 'rxjs';
+import { defaultIfEmpty, filter, from, map, mergeAll, type Observable as $, reduce, take } from 'npm:rxjs';
 
 /**
  * Sums all the numbers in the array
@@ -65,7 +65,7 @@ export const count = <T>(predicate?: (item: T) => boolean) => (source: $<T>) =>
  */
 export const enumerate = <TIn, TOut>(pipe: (x: $<TIn>) => $<TOut>) => (source: $<Array<TIn>>) =>
 	source.pipe(
-		map((input) => of(...input).pipe(pipe)),
+		map((input) => from(input).pipe(pipe)),
 		mergeAll(),
 	);
 
@@ -77,7 +77,7 @@ export const enumerate = <TIn, TOut>(pipe: (x: $<TIn>) => $<TOut>) => (source: $
 export const some = <TIn>(pipe: (x: $<TIn>) => $<boolean>) => (source: $<Array<TIn>>) =>
 	source.pipe(
 		map((input) =>
-			of(...input).pipe(
+			from(input).pipe(
 				pipe,
 				filter(Boolean),
 				take(1),
