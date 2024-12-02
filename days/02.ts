@@ -12,13 +12,11 @@ const filterMonotonic = () => (source: $<number[]>) =>
 
 const verifyDifferences = () => (source: $<number[]>) =>
 	source.pipe(
-		each((number) =>
-			number.pipe(
-				pairwise(),
-				map(([prev, curr]) => Math.abs(curr - prev)),
-				every((diff) => diff <= 3 && diff > 0),
-			)
-		),
+		each((number) => number.pipe(
+			pairwise(),
+			map(([prev, curr]) => Math.abs(curr - prev)),
+			every((diff) => diff <= 3 && diff > 0),
+		)),
 	);
 
 export const p1: Solution = (source) =>
@@ -36,12 +34,10 @@ export const p2: Solution = (source) =>
 		splitRows(),
 		map((row) => row.split(/\s+/).map(Number)),
 		map((numbers) => [numbers, ...numbers.map((_, i) => numbers.filter((_, j) => j !== i))]),
-		each((report) =>
-			report.pipe(
-				filterMonotonic(),
-				verifyDifferences(),
-				some(Boolean),
-			)
-		),
+		each((report) =>	report.pipe(
+			filterMonotonic(),
+			verifyDifferences(),
+			some(Boolean),
+		)),
 		count(),
 	);

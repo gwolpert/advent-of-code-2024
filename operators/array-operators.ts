@@ -67,8 +67,8 @@ export const count = <T>(predicate?: (item: T) => boolean) => (source: $<T>) =>
  */
 export const some = <T>(predicate?: (item: T) => boolean) => (source: $<T>) =>
 	source.pipe(
-		count(predicate),
-		filter((count) => count > 0),
+		reduce((acc, curr) => acc || (predicate ? predicate(curr) : !!curr), false),
+		filter(Boolean),
 	);
 
 /**
