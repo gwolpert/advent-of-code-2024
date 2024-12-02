@@ -1,6 +1,4 @@
-import { last, map, mergeAll, type Observable as $, reduce, tap } from 'rxjs';
-import { defaultIfEmpty, find, first, mergeMap, take } from 'npm:rxjs@7.8.1';
-import { filter, of } from 'npm:rxjs';
+import { defaultIfEmpty, filter, map, mergeAll, type Observable as $, of, reduce, take } from 'rxjs';
 
 /**
  * Sums all the numbers in the array
@@ -68,9 +66,14 @@ export const count = <T>(predicate?: (item: T) => boolean) => (source: $<T>) =>
 export const each = <TIn, TOut>(pipe: (x: $<TIn>) => $<TOut>) => (source: $<Array<TIn>>) =>
 	source.pipe(
 		map((input) => of(...input).pipe(pipe)),
-		mergeMap((row) => row),
+		mergeAll(),
 	);
 
+/**
+ * Check if some of the elements in the array match the predicate.
+ * When they do the observable will stop taking new values and return true.
+ * @param pipe The pipe modifier to apply to each element
+ */
 export const some = <TIn>(pipe: (x: $<TIn>) => $<boolean>) => (source: $<Array<TIn>>) =>
 	source.pipe(
 		map((input) =>

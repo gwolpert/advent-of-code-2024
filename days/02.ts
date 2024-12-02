@@ -1,6 +1,6 @@
 import { Solution } from '@types';
 import { count, each, some, splitRows } from '@operators';
-import { every, filter, map, Observable as $, pairwise, tap } from 'npm:rxjs';
+import { every, filter, map, Observable as $, pairwise } from 'rxjs';
 
 const filterMonotonic = () => (source: $<number[]>) =>
 	source.pipe(
