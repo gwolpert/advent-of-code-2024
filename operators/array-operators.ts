@@ -1,5 +1,5 @@
-import { map, type Observable as $, reduce } from 'rxjs';
-import { mergeMap } from 'npm:rxjs@7.8.1';
+import { last, map, mergeAll, type Observable as $, reduce, tap } from 'rxjs';
+import { defaultIfEmpty, find, first, mergeMap, take } from 'npm:rxjs@7.8.1';
 import { filter, of } from 'npm:rxjs';
 
 /**
@@ -62,16 +62,6 @@ export const count = <T>(predicate?: (item: T) => boolean) => (source: $<T>) =>
 	);
 
 /**
- * Checks if at least one element in the array match the predicate
- * @param predicate The predicate to match
- */
-export const some = <T>(predicate?: (item: T) => boolean) => (source: $<T>) =>
-	source.pipe(
-		reduce((acc, curr) => acc || (predicate ? predicate(curr) : !!curr), false),
-		filter(Boolean),
-	);
-
-/**
  * Loop over each element in the array and apply the pipe modifier
  * @param pipe The pipe modifier to apply to each element
  */
@@ -79,4 +69,17 @@ export const each = <TIn, TOut>(pipe: (x: $<TIn>) => $<TOut>) => (source: $<Arra
 	source.pipe(
 		map((input) => of(...input).pipe(pipe)),
 		mergeMap((row) => row),
+	);
+
+export const some = <TIn>(pipe: (x: $<TIn>) => $<boolean>) => (source: $<Array<TIn>>) =>
+	source.pipe(
+		map((input) =>
+			of(...input).pipe(
+				pipe,
+				filter(Boolean),
+				take(1),
+			)
+		),
+		mergeAll(),
+		defaultIfEmpty(false),
 	);
