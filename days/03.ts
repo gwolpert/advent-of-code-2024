@@ -13,6 +13,6 @@ export const p2: Solution = (source) =>
 	source.pipe(
 		match(/mul\((\d+),(\d+)\)|(do(n't)?)\(\)/g),
 		mergeAll(),
-		reduce(([sum, x], [, a, b, doo, dont]) => (doo ? [sum, !dont] : [+sum + (x ? +a * +b : 0), x]), [0, true]),
-		map(([sum]) => +sum),
+		reduce(([sum, curr], [, a, b, y, x]) => y ? [sum, !x] : [+sum + (curr ? +a * +b : 0), curr], [0, true]),
+		map(([sum]) => sum as number),
 	);
