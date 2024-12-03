@@ -1,5 +1,11 @@
 # Advent of Code 2024: Typescript + Rx + Deno
 
+<p style="display: flex; gap: 1rem;">
+  <img src="https://rxjs.dev/generated/images/marketing/home/Rx_Logo-512-512.png" alt="RxJS Logo" width="100" />
+  <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg" alt="TypeScript Logo" width="100" />
+  <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Deno_Logo_2024.svg" alt="Deno Logo" width="100" />
+</p>
+
 [![Advent of Code 2024 - Deno CI](https://github.com/gwolpert/advent-of-code-2024/actions/workflows/deno.yml/badge.svg)](https://github.com/gwolpert/advent-of-code-2024/actions/workflows/deno.yml)
 
 This project is a collection of solutions for the [Advent of Code 2024](https://adventofcode.com/2024), written in Typescript and leveraging [RxJS (Reactive Extensions for JavaScript)](https://rxjs.dev/) on the [Deno runtime](https://deno.land/).
