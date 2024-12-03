@@ -5,7 +5,7 @@ import { map, reduce } from 'rxjs';
 export const p1: Solution = (source) =>
 	source.pipe(
 		match(/mul\((\d+),(\d+)\)/g),
-		map(([a, b]) => +a * +b),
+		map(([, a, b]) => +a * +b),
 		sum(),
 	);
 
