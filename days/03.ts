@@ -1,6 +1,6 @@
 import { Solution } from '@types';
 import { match, matchMap, sum } from '@operators';
-import { map, mergeAll, reduce } from 'npm:rxjs';
+import { map, mergeAll, reduce } from 'rxjs';
 
 export const p1: Solution = (source) =>
 	source.pipe(
