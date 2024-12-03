@@ -72,6 +72,7 @@ export const enumerate = <TIn, TOut>(pipe: (x: $<TIn>) => $<TOut>) => (source: $
 /**
  * Check if some of the elements in the array match the predicate.
  * When they do the observable will stop taking new values and return true.
+ * All the other values will be ignored.
  * @param pipe The pipe modifier to apply to each element
  */
 export const some = <TIn>(pipe: (x: $<TIn>) => $<boolean>) => (source: $<Array<TIn>>) =>

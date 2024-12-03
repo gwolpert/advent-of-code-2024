@@ -26,19 +26,5 @@ export const splitRows = (length = 1) => (source: $<string>) =>
 export const match = (regex: RegExp) => (source: $<string>) =>
 	source.pipe(
 		map((input) => of(...input.matchAll(regex))),
-	);
-
-/**
- * Matches a string based on a regex and maps the results to a new value.
- * @param regex The regex to match the string by.
- * @param mapFn The function to map the results by.
- */
-export const matchMap = <T = string>(regex: RegExp, mapFn: (match: RegExpExecArray) => T) => (source: $<string>) =>
-	source.pipe(
-		match(regex),
-		mergeMap((matches) =>
-			matches.pipe(
-				reduce((acc, curr) => [...acc, mapFn(curr)], new Array<T>()),
-			)
-		),
+		mergeAll(),
 	);
