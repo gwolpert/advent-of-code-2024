@@ -17,6 +17,6 @@ export const executeSolution =
 				const end = performance.now() - start;
 				console.log(ul(blue(`Running day ${day} part ${part}:`)));
 				console.log(`${yellow('[Answer]\t')} ${result}`);
-				console.log(`${yellow('[Time]\t\t')} ~${end.toFixed(3)}ms\n`);
+				console.log(`${yellow('[Time]\t\t')} ${(end * 10 ** 3).toFixed(1)}μs\n`);
 			}),
 		);
