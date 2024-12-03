@@ -1,5 +1,7 @@
 # Advent of Code Template: Typescript + Deno
 
+[![Advent of Code 2024 - Deno CI](https://github.com/gwolpert/advent-of-code-2024/actions/workflows/deno.yml/badge.svg)](https://github.com/gwolpert/advent-of-code-2024/actions/workflows/deno.yml)
+
 This project uses Typescript on the [Deno runtime](https://deno.land/).
 
 To run the day
