@@ -22,7 +22,7 @@ export const joinNodeValues = () => (source: $<MatrixCell<string>[]>) =>
 export const p1: Solution = (source) =>
   source.pipe(
     extractMatrixNodes(),
-    filter((cell) => cell.value === 'X'),
+    filter((node) => node.value === 'X'),
     nodesInDirection(3, '↑', '←', '→', '↓', '↖', '↗', '↘', '↙'),
     enumerate((nodesInDirection) =>
       nodesInDirection.pipe(
@@ -30,7 +30,7 @@ export const p1: Solution = (source) =>
         filter((vector) => vector.size === 3),
         extractVectorNodes(),
         joinNodeValues(),
-        filter((values) => values === 'MAS'),
+        filter((wordInDirection) => wordInDirection === 'MAS'),
       )
     ),
     count(),
@@ -39,14 +39,14 @@ export const p1: Solution = (source) =>
 export const p2: Solution = (source) =>
   source.pipe(
     extractMatrixNodes(),
-    filter((cell) => cell.value === 'A'),
+    filter((node) => node.value === 'A'),
     nodesInDirection(1, '⤡', '⤢'),
-    enumerate((neighbor) =>
-      neighbor.pipe(
+    enumerate((nodesInDirection) =>
+      nodesInDirection.pipe(
         map(({ vector }) => vector),
         extractVectorNodes(),
         joinNodeValues(),
-        every((values) => !!values.match(/MS|SM/)),
+        every((wordInDirection) => !!wordInDirection.match(/MS|SM/)),
       )
     ),
     count(Boolean),
