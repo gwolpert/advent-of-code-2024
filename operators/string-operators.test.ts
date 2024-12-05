@@ -1,11 +1,12 @@
 import { of } from 'rxjs';
 import { assertEquals } from 'assert';
 import { match, splitRows } from './string-operators.ts';
+import { mergeAll } from 'rxjs';
 
 Deno.test('splitting a string into an array of strings based on newline characters', () => {
   const input = of('a\nb\nc');
   let index = 0;
-  input.pipe(splitRows()).subscribe((result) => {
+  input.pipe(splitRows(), mergeAll()).subscribe((result) => {
     assertEquals(result, ['a', 'b', 'c'][index++]);
   });
 });
@@ -13,7 +14,7 @@ Deno.test('splitting a string into an array of strings based on newline characte
 Deno.test('splitting a string into an array of strings based on two newline characters', () => {
   const input = of('a\n\nb\nc');
   let index = 0;
-  input.pipe(splitRows(2)).subscribe((result) => {
+  input.pipe(splitRows(2), mergeAll()).subscribe((result) => {
     assertEquals(result, ['a', 'b\nc'][index++]);
   });
 });
