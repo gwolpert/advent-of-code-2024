@@ -1,12 +1,17 @@
 import { Solution } from '@types';
 import { cellsFromMatrix, count, enumerate, join, matrix, neighborsFromCell } from '@operators';
-import { every, filter, map, mergeAll } from 'rxjs';
+import { every, filter, map, mergeAll, Observable as $ } from 'rxjs';
 
-export const p1: Solution = (source) =>
+export const processInput = () => (source: $<string>) =>
   source.pipe(
     matrix(),
     cellsFromMatrix(),
     mergeAll(),
+  );
+
+export const p1: Solution = (source) =>
+  source.pipe(
+    processInput(),
     filter((cell) => cell.value === 'X'),
     neighborsFromCell(3, '↑', '←', '→', '↓', '↖', '↗', '↘', '↙'),
     enumerate((neighbor) =>
@@ -28,9 +33,7 @@ export const p1: Solution = (source) =>
 
 export const p2: Solution = (source) =>
   source.pipe(
-    matrix(),
-    cellsFromMatrix(),
-    mergeAll(),
+    processInput(),
     filter((cell) => cell.value === 'A'),
     neighborsFromCell(1, '⤡', '⤢'),
     enumerate((neighbor) =>
