@@ -1,6 +1,8 @@
 import { assertEquals } from 'assert/equals';
 import { of } from 'rxjs';
-import { matrix, matrixCell, matrixNeighbors } from './matrix-operators.ts';
+import { cellFromMatrix, cellsFromMatrix, matrix, neighborsFromCell } from './matrix-operators.ts';
+import { map } from 'rxjs';
+import { enumerate } from './array-operators.ts';
 
 Deno.test('create a matrix', () => {
 	const input = of('abc\ndef\nghi');
@@ -20,7 +22,7 @@ Deno.test('find a cell in a matrix', () => {
 	const input = of('abc\ndef\nghi');
 	input.pipe(
 		matrix(),
-		matrixCell([1, 1]),
+		cellFromMatrix([1, 1]),
 	).subscribe((result) => {
 		const { value } = result!;
 		assertEquals(value, 'e');
@@ -31,8 +33,8 @@ Deno.test('find a cell in a matrix from another cell', () => {
 	const input = of('abc\ndef\nghi');
 	input.pipe(
 		matrix(),
-		matrixCell([1, 1]),
-		matrixCell([0, 2]),
+		cellFromMatrix([1, 1]),
+		cellFromMatrix([0, 2]),
 	).subscribe((result) => {
 		const { value } = result!;
 		assertEquals(value, 'g');
@@ -43,8 +45,10 @@ Deno.test('get the neighbors of a cell in a matrix', () => {
 	const input = of('abcde\nfghij\nklmno\npqrst\nuvwxy');
 	input.pipe(
 		matrix(),
-		matrixCell([2, 2]),
-		matrixNeighbors(),
+		cellFromMatrix([2, 2]),
+		neighborsFromCell(1, '*'),
+		map(([neighbor]) => neighbor.matrix),
+		cellsFromMatrix(),
 	).subscribe(({ value }) => {
 		assertEquals('ghilnqrs'.includes(value), true);
 		assertEquals('abcdefjkoptuvwxy'.includes(value), false);
@@ -55,10 +59,16 @@ Deno.test('get the neighbors of a cell in a matrix with a distance of 2', () => 
 	const input = of('abcde\nfghij\nklmno\npqrst\nuvwxy');
 	input.pipe(
 		matrix(),
-		matrixCell([2, 2]),
-		matrixNeighbors('*', 2),
+		cellFromMatrix([2, 2]),
+		neighborsFromCell(2, '↑', '←', '→', '↓'),
+		enumerate((neighbors) =>
+			neighbors.pipe(
+				map((x) => x.matrix),
+				cellsFromMatrix(),
+			)
+		),
 	).subscribe(({ value }) => {
-		assertEquals('acekoqrsuwy'.includes(value), true);
-		assertEquals('bdfghijlnpqrstvx'.includes(value), false);
+		assertEquals('chklnorw'.includes(value), true);
+		assertEquals('abdefgijpqstuvxy'.includes(value), false);
 	});
 });

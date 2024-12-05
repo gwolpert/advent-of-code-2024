@@ -23,40 +23,42 @@ export const matrix = <T = string>(map: (x: string) => T = (x) => x as T) => (so
 		}, new Map() as Matrix<T>),
 	);
 
-export const matrixCells = () => <T>(source: $<Matrix<T>>) =>
+export const cellsFromMatrix = () => <T>(source: $<Matrix<T>>) =>
 	source.pipe(
 		mergeMap((matrix) => from(matrix.values().toArray())),
 	);
 
-export const matrixCell = <T>(coord: MatrixCoordinates) => (source: $<MatrixOrCell<T>>) =>
+export const cellFromMatrix = <T>(coord: MatrixCoordinates) => (source: $<MatrixOrCell<T>>) =>
 	source.pipe(
 		map((matrixOrCell) => MatrixOrCell.extractMatrix(matrixOrCell)?.get(coord.toString())),
 	);
 
-export const matrixNeighbors = <T>(distance = 1, ...directions: Direction[]) => (source: $<MatrixCell<T>>) =>
-	source.pipe(
-		map((matrixCell) =>
-			directions.map((direction) => {
-				let { coord, matrix } = matrixCell;
-				const neighbors: Matrix<T> = new Map();
-				const setNeighbor = (direction: Direction, distance: number) => {
-					const newCoord = MatrixCell.move(coord, direction, distance);
-					const neighbor = matrix.get(newCoord.toString());
-					if (neighbor) neighbors.set(newCoord.toString(), neighbor);
-				};
+export const neighborsFromCell =
+	<T>(distance = 1, ...directions: Direction[]) => (source: $<MatrixCell<T> | undefined>) =>
+		source.pipe(
+			map((matrixCell) => {
+				if (!matrixCell) return [];
+				return directions.map((direction) => {
+					let { coord, matrix } = matrixCell;
+					const neighbors: Matrix<T> = new Map();
+					const setNeighbor = (direction: Direction, distance: number) => {
+						const newCoord = MatrixCell.move(coord, direction, distance);
+						const neighbor = matrix.get(newCoord.toString());
+						if (neighbor) neighbors.set(newCoord.toString(), neighbor);
+					};
 
-				for (let i = 1; i <= distance; i++) {
-					if ('*+↕↑'.includes(direction)) setNeighbor('↑', i);
-					if ('*+↕↓'.includes(direction)) setNeighbor('↓', i);
-					if ('*+↔←'.includes(direction)) setNeighbor('←', i);
-					if ('*+↔→'.includes(direction)) setNeighbor('→', i);
-					if ('*x⤡↖'.includes(direction)) setNeighbor('↖', i);
-					if ('*x⤢↗'.includes(direction)) setNeighbor('↗', i);
-					if ('*x⤡↘'.includes(direction)) setNeighbor('↘', i);
-					if ('*x⤢↙'.includes(direction)) setNeighbor('↙', i);
-				}
+					for (let i = 1; i <= distance; i++) {
+						if ('*+↕↑'.includes(direction)) setNeighbor('↑', i);
+						if ('*+↕↓'.includes(direction)) setNeighbor('↓', i);
+						if ('*+↔←'.includes(direction)) setNeighbor('←', i);
+						if ('*+↔→'.includes(direction)) setNeighbor('→', i);
+						if ('*x⤡↖'.includes(direction)) setNeighbor('↖', i);
+						if ('*x⤢↗'.includes(direction)) setNeighbor('↗', i);
+						if ('*x⤡↘'.includes(direction)) setNeighbor('↘', i);
+						if ('*x⤢↙'.includes(direction)) setNeighbor('↙', i);
+					}
 
-				return { direction, matrix: neighbors } as MatrixDirection<T>;
-			})
-		),
-	);
+					return { direction, matrix: neighbors } as MatrixDirection<T>;
+				});
+			}),
+		);
