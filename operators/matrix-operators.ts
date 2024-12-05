@@ -1,8 +1,6 @@
-import { from, map, Observable as $, reduce } from 'rxjs';
+import { map, Observable as $, reduce } from 'rxjs';
 import { splitRows } from './string-operators.ts';
 import { Direction, Matrix, MatrixCell, MatrixCoordinates, MatrixDirection, MatrixOrCell } from '@types';
-import { mergeMap } from 'rxjs';
-import { mergeAll } from 'rxjs';
 
 /**
  * Converts a string into a matrix
