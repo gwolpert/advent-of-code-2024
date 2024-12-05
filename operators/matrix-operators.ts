@@ -1,6 +1,7 @@
 import { map, Observable as $, reduce } from 'rxjs';
 import { splitRows } from './string-operators.ts';
 import { Direction, Matrix, MatrixCell, MatrixCoordinates, MatrixDirection, MatrixOrCell } from '@types';
+import { mergeAll } from 'rxjs';
 
 /**
  * Converts a string into a matrix
@@ -13,6 +14,7 @@ import { Direction, Matrix, MatrixCell, MatrixCoordinates, MatrixDirection, Matr
 export const matrix = <T = string>(map: (x: string) => T = (x) => x as T) => (source: $<string>) =>
   source.pipe(
     splitRows(),
+    mergeAll(),
     reduce((acc, row, y) => {
       [...row].forEach((curr, x) => {
         const mapFn = (cell: string): MatrixCell<T> => ({ value: map(cell), coord: [x, y], matrix: acc });

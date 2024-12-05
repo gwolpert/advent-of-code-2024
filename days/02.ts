@@ -1,10 +1,12 @@
 import { Solution } from '@types';
 import { count, enumerate, some, splitRows } from '@operators';
 import { every, filter, map, Observable as $, pairwise } from 'rxjs';
+import { mergeAll } from 'rxjs';
 
 const processInput = () => (source: $<string>) =>
   source.pipe(
     splitRows(),
+    mergeAll(),
     map((row) => row.split(/\s+/).map(Number)),
   );
 

@@ -2,7 +2,7 @@ import { MatrixCell, Solution } from '@types';
 import { cellsFromMatrix, count, enumerate, join, matrix, neighborsFromCell } from '@operators';
 import { every, filter, map, mergeAll, Observable as $ } from 'rxjs';
 
-export const processInput = () => (source: $<string>) =>
+export const readMatrixCells = () => (source: $<string>) =>
   source.pipe(
     matrix(),
     cellsFromMatrix(),
@@ -21,7 +21,7 @@ export const joinCellValues = () => (source: $<MatrixCell<string>[]>) =>
 
 export const p1: Solution = (source) =>
   source.pipe(
-    processInput(),
+    readMatrixCells(),
     filter((cell) => cell.value === 'X'),
     neighborsFromCell(3, '↑', '←', '→', '↓', '↖', '↗', '↘', '↙'),
     enumerate((neighbor) =>
@@ -38,7 +38,7 @@ export const p1: Solution = (source) =>
 
 export const p2: Solution = (source) =>
   source.pipe(
-    processInput(),
+    readMatrixCells(),
     filter((cell) => cell.value === 'A'),
     neighborsFromCell(1, '⤡', '⤢'),
     enumerate((neighbor) =>
