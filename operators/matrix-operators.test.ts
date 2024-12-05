@@ -1,6 +1,6 @@
 import { assertEquals } from 'assert/equals';
 import { of } from 'rxjs';
-import { cellFromMatrix, cellsFromMatrix, matrix, neighborsFromCell } from './matrix-operators.ts';
+import { findVectorNode, extractVectorNodes, matrix, nodesInDirection } from './matrix-operators.ts';
 import { map } from 'rxjs';
 import { enumerate } from './array-operators.ts';
 import { mergeAll } from 'rxjs';
@@ -23,7 +23,7 @@ Deno.test('find a cell in a matrix', () => {
   const input = of('abc\ndef\nghi');
   input.pipe(
     matrix(),
-    cellFromMatrix([1, 1]),
+    findVectorNode([1, 1]),
   ).subscribe((result) => {
     const { value } = result!;
     assertEquals(value, 'e');
@@ -34,8 +34,8 @@ Deno.test('find a cell in a matrix from another cell', () => {
   const input = of('abc\ndef\nghi');
   input.pipe(
     matrix(),
-    cellFromMatrix([1, 1]),
-    cellFromMatrix([0, 2]),
+    findVectorNode([1, 1]),
+    findVectorNode([0, 2]),
   ).subscribe((result) => {
     const { value } = result!;
     assertEquals(value, 'g');
@@ -46,10 +46,10 @@ Deno.test('get the neighbors of a cell in a matrix', () => {
   const input = of('abcde\nfghij\nklmno\npqrst\nuvwxy');
   input.pipe(
     matrix(),
-    cellFromMatrix([2, 2]),
-    neighborsFromCell(1, '*'),
-    map(([neighbor]) => neighbor.matrix),
-    cellsFromMatrix(),
+    findVectorNode([2, 2]),
+    nodesInDirection(1, '*'),
+    map(([neighbor]) => neighbor.vector),
+    extractVectorNodes(),
     mergeAll(),
   ).subscribe(({ value }) => {
     assertEquals('ghilnqrs'.includes(value), true);
@@ -61,12 +61,12 @@ Deno.test('get the neighbors of a cell in a matrix with a distance of 2', () => 
   const input = of('abcde\nfghij\nklmno\npqrst\nuvwxy');
   input.pipe(
     matrix(),
-    cellFromMatrix([2, 2]),
-    neighborsFromCell(2, '↑', '←', '→', '↓'),
+    findVectorNode([2, 2]),
+    nodesInDirection(2, '↑', '←', '→', '↓'),
     enumerate((neighbors) =>
       neighbors.pipe(
-        map((x) => x.matrix),
-        cellsFromMatrix(),
+        map((x) => x.vector),
+        extractVectorNodes(),
         mergeAll(),
       )
     ),

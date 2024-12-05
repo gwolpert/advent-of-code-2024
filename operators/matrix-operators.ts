@@ -25,56 +25,56 @@ export const matrix = <T = string>(map: (x: string) => T = (x) => x as T) => (so
   );
 
 /**
- * Gets all the cells from a matrix and emits them as a stream
+ * Gets all the cells from a vector and emits them as a stream
  * @returns A stream of the cells
  */
-export const cellsFromMatrix = () => <T>(source: $<Matrix<T>>) =>
+export const extractVectorNodes = () => <T>(source: $<Matrix<T>>) =>
   source.pipe(
     map((matrix) => matrix.values().toArray()),
   );
 
 /**
- * Gets a cell from a matrix by its coordinates
+ * Gets a cell from a vector by its coordinates
  * @param coord The coordinates of the cell to get
  * @returns A stream of the cell
  */
-export const cellFromMatrix = <T>(coord: MatrixCoordinates) => (source: $<MatrixOrCell<T>>) =>
+export const findVectorNode = <T>(coord: MatrixCoordinates) => (source: $<MatrixOrCell<T>>) =>
   source.pipe(
     map((matrixOrCell) => MatrixOrCell.extractMatrix(matrixOrCell)?.get(coord.toString())),
   );
 
 /**
- * Finds the neighbors of a cell in a matrix in the specified directions
+ * Finds the nodes of another node in a matrix in the specified directions
  * @param distance The distance to find the neighbors from the original cell
  * @param directions The directions to find the neighbors from the original cell
- * @returns The neighbors of the cell grouped by direction.
+ * @returns The nodes of the cell grouped by direction.
  */
-export const neighborsFromCell =
+export const nodesInDirection =
   <T>(distance = 1, ...directions: Direction[]) => (source: $<MatrixCell<T> | undefined>) =>
     source.pipe(
       map((matrixCell) => {
         if (!matrixCell) return [];
         return directions.map((direction) => {
           let { coord, matrix } = matrixCell;
-          const neighbors: Matrix<T> = new Map();
-          const setNeighbor = (direction: Direction, distance: number) => {
+          const vector: Matrix<T> = new Map();
+          const setNode = (direction: Direction, distance: number) => {
             const newCoord = MatrixCell.move(coord, direction, distance);
             const neighbor = matrix.get(newCoord.toString());
-            if (neighbor) neighbors.set(newCoord.toString(), neighbor);
+            if (neighbor) vector.set(newCoord.toString(), neighbor);
           };
 
           for (let i = 1; i <= distance; i++) {
-            if ('*+↕↑'.includes(direction)) setNeighbor('↑', i);
-            if ('*+↕↓'.includes(direction)) setNeighbor('↓', i);
-            if ('*+↔←'.includes(direction)) setNeighbor('←', i);
-            if ('*+↔→'.includes(direction)) setNeighbor('→', i);
-            if ('*x⤡↖'.includes(direction)) setNeighbor('↖', i);
-            if ('*x⤢↗'.includes(direction)) setNeighbor('↗', i);
-            if ('*x⤡↘'.includes(direction)) setNeighbor('↘', i);
-            if ('*x⤢↙'.includes(direction)) setNeighbor('↙', i);
+            if ('*+↕↑'.includes(direction)) setNode('↑', i);
+            if ('*+↕↓'.includes(direction)) setNode('↓', i);
+            if ('*+↔←'.includes(direction)) setNode('←', i);
+            if ('*+↔→'.includes(direction)) setNode('→', i);
+            if ('*x⤡↖'.includes(direction)) setNode('↖', i);
+            if ('*x⤢↗'.includes(direction)) setNode('↗', i);
+            if ('*x⤡↘'.includes(direction)) setNode('↘', i);
+            if ('*x⤢↙'.includes(direction)) setNode('↙', i);
           }
 
-          return { direction, matrix: neighbors } as MatrixDirection<T>;
+          return { direction, vector } as MatrixDirection<T>;
         });
       }),
     );

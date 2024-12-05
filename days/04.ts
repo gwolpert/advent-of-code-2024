@@ -1,15 +1,15 @@
 import { MatrixCell, Solution } from '@types';
-import { cellsFromMatrix, count, enumerate, join, matrix, neighborsFromCell } from '@operators';
+import { extractVectorNodes, count, enumerate, join, matrix, nodesInDirection } from '@operators';
 import { every, filter, map, mergeAll, Observable as $ } from 'rxjs';
 
-export const readMatrixCells = () => (source: $<string>) =>
+export const extractMatrixNodes = () => (source: $<string>) =>
   source.pipe(
     matrix(),
-    cellsFromMatrix(),
+    extractVectorNodes(),
     mergeAll(),
   );
 
-export const joinCellValues = () => (source: $<MatrixCell<string>[]>) =>
+export const joinNodeValues = () => (source: $<MatrixCell<string>[]>) =>
   source.pipe(
     enumerate((cell) =>
       cell.pipe(
@@ -21,15 +21,15 @@ export const joinCellValues = () => (source: $<MatrixCell<string>[]>) =>
 
 export const p1: Solution = (source) =>
   source.pipe(
-    readMatrixCells(),
+    extractMatrixNodes(),
     filter((cell) => cell.value === 'X'),
-    neighborsFromCell(3, '↑', '←', '→', '↓', '↖', '↗', '↘', '↙'),
-    enumerate((neighbor) =>
-      neighbor.pipe(
-        map(({ matrix }) => matrix),
-        filter((matrix) => matrix.size === 3),
-        cellsFromMatrix(),
-        joinCellValues(),
+    nodesInDirection(3, '↑', '←', '→', '↓', '↖', '↗', '↘', '↙'),
+    enumerate((nodesInDirection) =>
+      nodesInDirection.pipe(
+        map(({ vector }) => vector),
+        filter((vector) => vector.size === 3),
+        extractVectorNodes(),
+        joinNodeValues(),
         filter((values) => values === 'MAS'),
       )
     ),
@@ -38,14 +38,14 @@ export const p1: Solution = (source) =>
 
 export const p2: Solution = (source) =>
   source.pipe(
-    readMatrixCells(),
+    extractMatrixNodes(),
     filter((cell) => cell.value === 'A'),
-    neighborsFromCell(1, '⤡', '⤢'),
+    nodesInDirection(1, '⤡', '⤢'),
     enumerate((neighbor) =>
       neighbor.pipe(
-        map(({ matrix }) => matrix),
-        cellsFromMatrix(),
-        joinCellValues(),
+        map(({ vector }) => vector),
+        extractVectorNodes(),
+        joinNodeValues(),
         every((values) => !!values.match(/MS|SM/)),
       )
     ),
