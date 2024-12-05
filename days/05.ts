@@ -31,7 +31,7 @@ export const p1: Solution = (source) =>
     filter(([pages, rules]) =>
       rules
         .map(([left, right]) => [pages.indexOf(left), pages.indexOf(right)])
-        .every(([left, right]) => right === -1 || left < right)
+        .every(([left, right]) => !~right || left < right)
     ),
     map(([pages]) => pages),
     sumMiddlePages(),
@@ -43,7 +43,7 @@ export const p2: Solution = (source) =>
     filter(([pages, rules]) =>
       rules
         .map(([left, right]) => [pages.indexOf(left), pages.indexOf(right)])
-        .some(([left, right]) => right !== -1 && left > right)
+        .some(([left, right]) => ~right && left > right)
     ),
     map(([pages, rules]) => {
       const flatRules = rules.flatMap<[string, number]>(([l, r]) => [[`${l},${r}`, -1], [`${r},${l}`, 1]]);
