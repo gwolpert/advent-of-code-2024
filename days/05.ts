@@ -1,19 +1,27 @@
 import { Solution } from '@types';
-import { splitRows, sum } from '@operators';
-import { filter, map, mergeAll, Observable as $, toArray, withLatestFrom } from 'rxjs';
+import { enumerate, split, splitRows, sum } from '@operators';
+import { filter, map, Observable as $, toArray, withLatestFrom } from 'rxjs';
 
 const processInput = () => (source: $<string>) => {
   const input = source.pipe(splitRows(2));
   return input.pipe(
     map(([, manualsInput]) => manualsInput),
     splitRows(),
-    mergeAll(),
-    map((manualInput) => manualInput.split(',').map(Number)),
+    enumerate((manual) =>
+      manual.pipe(
+        split(/,/),
+        map((x) => x.map(Number)),
+      )
+    ),
     withLatestFrom(input.pipe(
       map(([rulesInput]) => rulesInput),
       splitRows(),
-      mergeAll(),
-      map((ruleInput) => ruleInput.split('|').map(Number)),
+      enumerate((manual) =>
+        manual.pipe(
+          split(/\|/),
+          map((x) => x.map(Number)),
+        )
+      ),
       toArray(),
     )),
   );
