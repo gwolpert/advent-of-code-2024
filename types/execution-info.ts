@@ -1,4 +1,4 @@
 export interface ExecutionInfo {
-	day: number;
-	part: number;
+  day: number;
+  part: number;
 }
