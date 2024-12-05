@@ -5,7 +5,7 @@ import { filter, map, Observable as $, toArray, withLatestFrom } from 'rxjs';
 const processInput = () => (source: $<string>) => {
   const input = source.pipe(splitRows(2));
   return input.pipe(
-    map(([, manualsInput]) => manualsInput),
+    map(([, manuals]) => manuals),
     splitRows(),
     enumerate((manual) =>
       manual.pipe(
@@ -14,10 +14,10 @@ const processInput = () => (source: $<string>) => {
       )
     ),
     withLatestFrom(input.pipe(
-      map(([rulesInput]) => rulesInput),
+      map(([rules]) => rules),
       splitRows(),
-      enumerate((manual) =>
-        manual.pipe(
+      enumerate((rule) =>
+        rule.pipe(
           split(/\|/),
           map((x) => x.map(Number)),
         )
