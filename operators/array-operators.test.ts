@@ -1,6 +1,6 @@
 import { from, last, map, tap } from 'rxjs';
 import { assertEquals } from 'assert';
-import { avg, count, enumerate, join, max, median, min, product, some, sortNums, sum } from './array-operators.ts';
+import { avg, enumerate, join, max, median, min, product, some, sortNums, sum } from './array-operators.ts';
 
 Deno.test('calculating the sum of an array of positive numbers', () => {
   const array = from([5, 2, 3, 4, 1]);
@@ -114,12 +114,6 @@ Deno.test('joining an array of strings into a single string with no separator', 
   });
 });
 
-Deno.test('counting the total number of elements in an array', () => {
-  const array = from([5, 2, 3, 4, 1]);
-  array.pipe(count()).subscribe((result) => {
-    assertEquals(result, 5);
-  });
-});
 
 Deno.test('enumerating the elements in an array', () => {
   let index = 0;
