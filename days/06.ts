@@ -70,21 +70,17 @@ export const p2: Solution = (source) =>
     createLab(),
     createLabGuard(),
     tap(({ visited, start }) => visited.delete(start.toString())),
-    map(({ visited }) => visited.values().toArray()),
-    enumerate((obstruction) =>
-      obstruction.pipe(
-        map((coord) => MatrixCoordinates.fromString(coord)),
-        mergeMap((coord) =>
-          source.pipe(
-            createLab(),
-            getVectorNode(coord),
-            filter(Boolean),
-            tap((node) => node.value = '#'),
-            map(({ matrix }) => matrix),
-            createLabGuard(),
-            filter(({ infiniteLoop }) => infiniteLoop),
-          )
-        ),
+    mergeMap(({ visited }) => visited.values().toArray()),
+    map((coord) => MatrixCoordinates.fromString(coord)),
+    mergeMap((coord) =>
+      source.pipe(
+        createLab(),
+        getVectorNode(coord),
+        filter(Boolean),
+        tap((node) => node.value = '#'),
+        map(({ matrix }) => matrix),
+        createLabGuard(),
+        filter(({ infiniteLoop }) => infiniteLoop),
       )
     ),
     count(),
