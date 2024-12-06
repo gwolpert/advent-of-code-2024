@@ -13,7 +13,7 @@ export type MatrixOrCell<T = string> = Matrix<T> | MatrixCell<T> | undefined;
 export type Direction = '↑' | '↓' | '↕' | '←' | '→' | '↔' | '↖' | '↘' | '⤡' | '↗' | '↙' | '⤢' | '*' | '+' | 'x';
 
 export interface MatrixDirection<T = string> {
-  matrix: Matrix<T>;
+  vector: Matrix<T>;
   direction: Direction;
 }
 

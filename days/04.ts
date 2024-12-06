@@ -1,6 +1,6 @@
 import { MatrixCell, Solution } from '@types';
-import { extractVectorNodes, count, enumerate, join, matrix, nodesInDirection } from '@operators';
-import { every, filter, map, mergeAll, Observable as $ } from 'rxjs';
+import { enumerate, extractVectorNodes, join, matrix, nodesInDirection } from '@operators';
+import { count, every, filter, map, mergeAll, Observable as $ } from 'rxjs';
 
 export const extractMatrixNodes = () => (source: $<string>) =>
   source.pipe(

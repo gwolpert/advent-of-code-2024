@@ -1,6 +1,6 @@
 import { assertEquals } from 'assert/equals';
 import { of } from 'rxjs';
-import { findVectorNode, extractVectorNodes, matrix, nodesInDirection } from './matrix-operators.ts';
+import { extractVectorNodes, getVectorNode, matrix, nodesInDirection } from './matrix-operators.ts';
 import { map } from 'rxjs';
 import { enumerate } from './array-operators.ts';
 import { mergeAll } from 'rxjs';
@@ -23,7 +23,7 @@ Deno.test('find a cell in a matrix', () => {
   const input = of('abc\ndef\nghi');
   input.pipe(
     matrix(),
-    findVectorNode([1, 1]),
+    getVectorNode([1, 1]),
   ).subscribe((result) => {
     const { value } = result!;
     assertEquals(value, 'e');
@@ -34,8 +34,8 @@ Deno.test('find a cell in a matrix from another cell', () => {
   const input = of('abc\ndef\nghi');
   input.pipe(
     matrix(),
-    findVectorNode([1, 1]),
-    findVectorNode([0, 2]),
+    getVectorNode([1, 1]),
+    getVectorNode([0, 2]),
   ).subscribe((result) => {
     const { value } = result!;
     assertEquals(value, 'g');
@@ -46,7 +46,7 @@ Deno.test('get the neighbors of a cell in a matrix', () => {
   const input = of('abcde\nfghij\nklmno\npqrst\nuvwxy');
   input.pipe(
     matrix(),
-    findVectorNode([2, 2]),
+    getVectorNode([2, 2]),
     nodesInDirection(1, '*'),
     map(([neighbor]) => neighbor.vector),
     extractVectorNodes(),
@@ -61,7 +61,7 @@ Deno.test('get the neighbors of a cell in a matrix with a distance of 2', () => 
   const input = of('abcde\nfghij\nklmno\npqrst\nuvwxy');
   input.pipe(
     matrix(),
-    findVectorNode([2, 2]),
+    getVectorNode([2, 2]),
     nodesInDirection(2, '↑', '←', '→', '↓'),
     enumerate((neighbors) =>
       neighbors.pipe(

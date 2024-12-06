@@ -38,9 +38,20 @@ export const extractVectorNodes = () => <T>(source: $<Matrix<T>>) =>
  * @param coord The coordinates of the cell to get
  * @returns A stream of the cell
  */
-export const findVectorNode = <T>(coord: MatrixCoordinates) => (source: $<MatrixOrCell<T>>) =>
+export const getVectorNode = <T>(coord: MatrixCoordinates) => (source: $<MatrixOrCell<T>>) =>
   source.pipe(
     map((matrixOrCell) => MatrixOrCell.extractMatrix(matrixOrCell)?.get(coord.toString())),
+  );
+
+/**
+ * Find the first node that satisfies a predicate
+ * @param predicate The predicate to satisfy
+ * @returns The first node that satisfies the predicate
+ */
+export const findVectorNode = <T>(predicate: (cell: MatrixCell<T>) => boolean) => (source: $<Matrix<T>>) =>
+  source.pipe(
+    extractVectorNodes(),
+    map((nodes) => nodes.find(predicate)),
   );
 
 /**

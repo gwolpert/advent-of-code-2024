@@ -77,10 +77,10 @@ export const join = (separator = '') => (source: $<string>) =>
  * Count the amount of elements which match the predicate
  * @param predicate The predicate to match
  */
-export const count = <T>(predicate?: (item: T) => boolean) => (source: $<T>) =>
-  source.pipe(
-    reduce((acc, curr) => acc + (predicate ? +predicate(curr) : 1), 0),
-  );
+// export const count = <T>(predicate?: (item: T) => boolean) => (source: $<T>) =>
+//   source.pipe(
+//     reduce((acc, curr) => acc + (predicate ? +predicate(curr) : 1), 0),
+//   );
 
 /**
  * Loop over each element in the array and apply the pipe modifier
