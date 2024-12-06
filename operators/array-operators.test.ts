@@ -114,7 +114,6 @@ Deno.test('joining an array of strings into a single string with no separator', 
   });
 });
 
-
 Deno.test('enumerating the elements in an array', () => {
   let index = 0;
   const input = from([
