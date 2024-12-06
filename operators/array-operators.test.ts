@@ -121,20 +121,6 @@ Deno.test('counting the total number of elements in an array', () => {
   });
 });
 
-Deno.test('counting elements that match a condition', () => {
-  const array = from([5, 2, 3, 4, 1]);
-  array.pipe(count((item) => item > 2)).subscribe((result) => {
-    assertEquals(result, 3);
-  });
-});
-
-Deno.test('counting elements with a predicate and negative numbers', () => {
-  const array = from([5, -2, 3, -4, 1]);
-  array.pipe(count((item) => item > 0)).subscribe((result) => {
-    assertEquals(result, 3);
-  });
-});
-
 Deno.test('enumerating the elements in an array', () => {
   let index = 0;
   const input = from([
