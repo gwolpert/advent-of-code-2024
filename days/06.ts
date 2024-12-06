@@ -1,13 +1,6 @@
 import { Direction, Matrix, MatrixCoordinates, Solution } from '@types';
-import {
-  enumerate,
-  extractVectorNodes,
-  findVectorNode,
-  getVectorNode,
-  matrix,
-  nodesInDirection,
-} from '@operators';
-import { EMPTY, expand, filter, last, map, mergeMap, Observable as $, of, tap, count } from 'rxjs';
+import { enumerate, extractVectorNodes, findVectorNode, getVectorNode, matrix, nodesInDirection } from '@operators';
+import { count, EMPTY, expand, filter, last, map, mergeMap, Observable as $, of, tap } from 'rxjs';
 
 const turnRight = (direction: Direction) => {
   const map: Record<string, Direction> = {
