@@ -13,8 +13,8 @@ interface State {
 
 const createLab = () => (source: $<string>) => source.pipe(matrix());
 
-const createLabGuard = () => (source: $<Matrix<string>>) => {
-  return source.pipe(
+const createLabGuard = () => (source: $<Matrix<string>>) =>
+  source.pipe(
     findVectorNode((cell) => cell.value === '^'),
     filter(Boolean),
     map((currentNode): State => ({
@@ -36,27 +36,22 @@ const createLabGuard = () => (source: $<Matrix<string>>) => {
           determineNextState(state),
         );
       },
-      1,
+      64,
       queueScheduler,
     ),
     last(),
   );
-};
-
-const turnRight = (direction: Direction) => {
-  const map: Record<string, Direction> = { '↑': '→', '→': '↓', '↓': '←', '←': '↑' };
-  return map[direction];
-};
 
 const determineNextState = (state: State) => (source: $<MatrixCell<string>[]>) =>
   source.pipe(
     filter((array) => array.length >= 1),
     map(([nextNode]): State => {
       const nextCoord = nextNode.coord.toString();
+      const nextDir: Record<string, Direction> = { '↑': '→', '→': '↓', '↓': '←', '←': '↑' };
       return nextNode.value === '#'
         ? {
           ...state,
-          direction: turnRight(state.direction),
+          direction: nextDir[state.direction],
         }
         : {
           ...state,
