@@ -1,6 +1,6 @@
 import { Direction, Matrix, MatrixCell, MatrixCoordinates, Solution } from '@types';
 import { extractVectorNodes, findVectorNode, getVectorNode, matrix, nodesInDirection } from '@operators';
-import { count, EMPTY, expand, filter, last, map, mergeMap, Observable as $, of, tap, queueScheduler } from 'rxjs';
+import { count, EMPTY, expand, filter, last, map, mergeMap, Observable as $, of, queueScheduler, tap } from 'rxjs';
 
 interface State {
   currentNode: MatrixCell<string>;
@@ -25,16 +25,20 @@ const createLabGuard = () => (source: $<Matrix<string>>) => {
       visitedInDirection: new Set<string>([currentNode.coord.toString() + '↑']),
       start: currentNode.coord,
     })),
-    expand((state) => {
-      if (!state || state.infiniteLoop) return EMPTY;
-      return of(state).pipe(
-        map(({ currentNode }) => currentNode),
-        nodesInDirection(1, state.direction),
-        map(([nextNodesInDirection]) => nextNodesInDirection.vector),
-        extractVectorNodes(),
-        determineNextState(state),
-      );
-    }, 1, queueScheduler),
+    expand(
+      (state) => {
+        if (!state || state.infiniteLoop) return EMPTY;
+        return of(state).pipe(
+          map(({ currentNode }) => currentNode),
+          nodesInDirection(1, state.direction),
+          map(([nextNodesInDirection]) => nextNodesInDirection.vector),
+          extractVectorNodes(),
+          determineNextState(state),
+        );
+      },
+      1,
+      queueScheduler,
+    ),
     last(),
   );
 };
