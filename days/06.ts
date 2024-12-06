@@ -1,6 +1,6 @@
 import { Direction, Matrix, MatrixCell, MatrixCoordinates, Solution } from '@types';
 import { extractVectorNodes, findVectorNode, getVectorNode, matrix, nodesInDirection } from '@operators';
-import { count, EMPTY, expand, filter, last, map, mergeMap, Observable as $, of, tap } from 'rxjs';
+import { count, EMPTY, expand, filter, last, map, mergeMap, Observable as $, of, tap, queueScheduler } from 'rxjs';
 
 interface State {
   currentNode: MatrixCell<string>;
@@ -34,7 +34,7 @@ const createLabGuard = () => (source: $<Matrix<string>>) => {
         extractVectorNodes(),
         determineNextState(state),
       );
-    }),
+    }, 1, queueScheduler),
     last(),
   );
 };
