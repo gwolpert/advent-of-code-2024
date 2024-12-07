@@ -1,4 +1,5 @@
 import { map, mergeMap, type Observable as $ } from 'rxjs';
+import { filter } from 'rxjs';
 
 /**
  * Splits a string into an array of strings based on a separator.
@@ -22,7 +23,17 @@ export const splitRows = (length = 1) => (source: $<string>) =>
  * Matches a string based on a regex and groups the results by the input string.
  * @param regex The regex to match the string by.
  */
-export const match = (regex: RegExp) => (source: $<string>) =>
+export const matchAll = (regex: RegExp) => (source: $<string>) =>
   source.pipe(
     mergeMap((input) => input.matchAll(regex)),
+  );
+
+/**
+ * Matches a string based on a regex and groups the results by the input string.
+ * @param regex The regex to match the string by.
+ */
+export const match = (regex: RegExp) => (source: $<string>) =>
+  source.pipe(
+    map((input) => input.match(regex)),
+    filter(Boolean),
   );

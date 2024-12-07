@@ -1,5 +1,6 @@
 import {Solution} from '@types';
-import {count, splitRows} from "@operators";
+import {splitRows} from "@operators";
+import {count} from "rxjs";
 
 export const p1: Solution = (source) => source.pipe(
     splitRows(),

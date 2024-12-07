@@ -1,10 +1,10 @@
 import { Solution } from '@types';
-import { match, sum } from '@operators';
+import { matchAll, sum } from '@operators';
 import { map, Observable as $ } from 'rxjs';
 
 const findInstructions = () => (source: $<string>) =>
   source.pipe(
-    match(/mul\((\d+),(\d+)\)/g),
+    matchAll(/mul\((\d+),(\d+)\)/g),
     map(([, a, b]) => +a * +b),
     sum(),
   );

@@ -1,10 +1,10 @@
 import { Solution } from '@types';
-import { match, sum } from '@operators';
+import { matchAll, sum } from '@operators';
 import { map, mergeMap, Observable as $, reduce } from 'rxjs';
 
 const processInput = () => (source: $<string>) =>
   source.pipe(
-    match(/^(\d+)\s+(\d+)$/gm),
+    matchAll(/^(\d+)\s+(\d+)$/gm),
     reduce(([r, l], [, x, y]) => [[...r, +x], [...l, +y]], [[], []] as number[][]),
   );
 

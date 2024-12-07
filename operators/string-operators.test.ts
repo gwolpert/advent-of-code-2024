@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { assertEquals } from 'assert';
-import { match, splitRows } from './string-operators.ts';
+import { matchAll, splitRows } from './string-operators.ts';
 import { mergeAll } from 'rxjs';
 
 Deno.test('splitting a string into an array of strings based on newline characters', () => {
@@ -22,7 +22,7 @@ Deno.test('splitting a string into an array of strings based on two newline char
 Deno.test('matching a string based on a regex', () => {
   const input = of('a1b2c3');
   let index = 0;
-  input.pipe(match(/(\w)(\d)/g)).subscribe((result) => {
+  input.pipe(matchAll(/(\w)(\d)/g)).subscribe((result) => {
     const [match, group1, group2] = result;
     assertEquals(match, ['a1', 'b2', 'c3'][index]);
     assertEquals(group1, ['a', 'b', 'c'][index]);
