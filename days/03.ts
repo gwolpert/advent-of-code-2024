@@ -5,8 +5,7 @@ import { map, Observable as $ } from 'rxjs';
 const findInstructions = () => (source: $<string>) =>
   source.pipe(
     matchAll(/mul\((\d+),(\d+)\)/g),
-    map(([, a, b]) => +a * +b),
-    sum(),
+    sum(([, a, b]) => +a * +b),
   );
 
 export const p1: Solution = (source) => source.pipe(findInstructions());

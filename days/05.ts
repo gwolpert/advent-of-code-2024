@@ -29,8 +29,7 @@ const processInput = () => (source: $<string>) => {
 
 const sumMiddlePages = () => (source: $<number[]>) =>
   source.pipe(
-    map((pages) => pages[(pages.length - 1) / 2]),
-    sum(),
+    sum((pages) => pages[(pages.length - 1) / 2]),
   );
 
 export const p1: Solution = (source) =>

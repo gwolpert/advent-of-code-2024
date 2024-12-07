@@ -3,40 +3,45 @@ import { defaultIfEmpty, filter, from, map, mergeAll, type Observable as $, redu
 /**
  * Sums all the numbers in the array
  */
-export const sum = () => (source: $<number>) =>
+export const sum = <T = number>(mapFn: (item: T) => number = (x) => +x) => (source: $<T>) =>
   source.pipe(
+    map(mapFn),
     reduce((acc, curr) => acc + +curr, 0),
   );
 
 /**
  * Multiplies all the numbers in the array
  */
-export const product = () => (source: $<number>) =>
+export const product = <T = number>(mapFn: (item: T) => number = (x) => +x) => (source: $<T>) =>
   source.pipe(
+    map(mapFn),
     reduce((acc, curr) => acc * curr, 1),
   );
 
 /**
  * Returns the highest number in the array
  */
-export const max = () => (source: $<number>) =>
+export const max = <T = number>(mapFn: (item: T) => number = (x) => +x) => (source: $<T>) =>
   source.pipe(
+    map(mapFn),
     reduce((acc, curr) => acc > curr ? acc : curr, Number.MIN_SAFE_INTEGER),
   );
 
 /**
  * Returns the lowest number in the array
  */
-export const min = () => (source: $<number>) =>
+export const min = <T = number>(mapFn: (item: T) => number = (x) => +x) => (source: $<T>) =>
   source.pipe(
+    map(mapFn),
     reduce((acc, curr) => acc < curr ? acc : curr, Number.MAX_SAFE_INTEGER),
   );
 
 /**
  * Returns the average of all the numbers in the array
  */
-export const avg = () => (source: $<number>) =>
+export const avg = <T = number>(mapFn: (item: T) => number = (x) => +x) => (source: $<T>) =>
   source.pipe(
+    map(mapFn),
     reduce(([sum, count], curr) => [sum + curr, count + 1], [0, 0]),
     map(([sum, count]) => sum / count),
   );
@@ -44,8 +49,9 @@ export const avg = () => (source: $<number>) =>
 /**
  * Returns the median of all the numbers in the array
  */
-export const median = () => (source: $<number>) =>
+export const median = <T = number>(mapFn: (item: T) => number = (x) => +x) => (source: $<T>) =>
   source.pipe(
+    map(mapFn),
     reduce((acc, curr) => [...acc, curr], new Array<number>()),
     map((input) => {
       const sorted = input.toSorted((a, b) => a - b);
@@ -57,8 +63,9 @@ export const median = () => (source: $<number>) =>
 /**
  * Sorts the array numerically
  */
-export const sortNums = () => (source: $<number>) =>
+export const sortNums = <T = number>(mapFn: (item: T) => number = (x) => +x) => (source: $<T>) =>
   source.pipe(
+    map(mapFn),
     reduce((acc, curr) => [...acc, curr], new Array<number>()),
     map((input) => input.sort((a, b) => a - b)),
   );
@@ -72,15 +79,6 @@ export const join = (separator = '') => (source: $<string>) =>
     reduce((acc, curr) => acc + curr + separator, ''),
     map((input) => separator ? input.slice(0, -separator.length) : input),
   );
-
-/**
- * Count the amount of elements which match the predicate
- * @param predicate The predicate to match
- */
-// export const count = <T>(predicate?: (item: T) => boolean) => (source: $<T>) =>
-//   source.pipe(
-//     reduce((acc, curr) => acc + (predicate ? +predicate(curr) : 1), 0),
-//   );
 
 /**
  * Loop over each element in the array and apply the pipe modifier
